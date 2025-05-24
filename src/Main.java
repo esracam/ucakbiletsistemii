@@ -59,4 +59,25 @@ public class Ucus {
         return lokasyon + " | Tarih: " + saat + " | Uçak: " + ucak;
     }
 }
+public class Rezervasyon {
+    Ucus ucus;
+    String ad;
+    String soyad;
+    int yas;
+
+    public Rezervasyon(Ucus ucus, String ad, String soyad, int yas) {
+        this.ucus = ucus;
+        this.ad = ad;
+        this.soyad = soyad;
+        this.yas = yas;
+    }
+
+    public String toString() {
+        return "Ad: " + ad + " " + soyad + " | Yaş: " + yas + " | Uçuş: " + ucus.toString();
+    }
+
+    public String toCSV() {
+        return ad + "," + soyad + "," + yas + "," + ucus.lokasyon.sehir + "," + ucus.saat;
+    }
+}
 
