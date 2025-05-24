@@ -32,4 +32,31 @@ public class Lokasyon {
         return sehir + ", " + ulke + " - " + havaalani + (aktif ? " (Aktif)" : " (Pasif)");
     }
 }
+import java.time.LocalDateTime;
+
+public class Ucus {
+    Lokasyon lokasyon;
+    LocalDateTime saat;
+    Ucak ucak;
+    int doluKoltuk;
+
+    public Ucus(Lokasyon lokasyon, LocalDateTime saat, Ucak ucak) {
+        this.lokasyon = lokasyon;
+        this.saat = saat;
+        this.ucak = ucak;
+        this.doluKoltuk = 0;
+    }
+
+    public boolean rezervasyonYap() {
+        if (doluKoltuk < ucak.koltukKapasitesi) {
+            doluKoltuk++;
+            return true;
+        }
+        return false;
+    }
+
+    public String toString() {
+        return lokasyon + " | Tarih: " + saat + " | Uçak: " + ucak;
+    }
+}
 
