@@ -80,4 +80,65 @@ public class Rezervasyon {
         return ad + "," + soyad + "," + yas + "," + ucus.lokasyon.sehir + "," + ucus.saat;
     }
 }
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<Ucus> ucuslar = new ArrayList<>();
+        ArrayList<Rezervasyon> rezervasyonlar = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+
+        // Uçak ve Lokasyon örnekleri oluştur
+        Ucak ucak1 = new Ucak("A320", "Airbus", "SN123", 3);
+        Lokasyon lokasyon1 = new Lokasyon("Türkiye", "İstanbul", "İstanbul Havalimanı", true);
+        Ucus ucus1 = new Ucus(lokasyon1, LocalDateTime.of(2025, 6, 1, 12, 30), ucak1);
+
+        ucuslar.add(ucus1);
+
+        System.out.println("=== Mevcut Uçuşlar ===");
+        for (int i = 0; i < ucuslar.size(); i++) {
+            System.out.println((i + 1) + ". " + ucuslar.get(i));
+        }
+
+        System.out.print("Lütfen rezervasyon yapmak istediğiniz uçuş numarasını seçin: ");
+        int secim = scanner.nextInt();
+        scanner.nextLine(); // dummy read
+
+        if (secim < 1 || secim > ucuslar.size()) {
+            System.out.println("Geçersiz seçim.");
+            return;
+        }
+
+        Ucus secilenUcus = ucuslar.get(secim - 1);
+
+        if (secilenUcus.rezervasyonYap()) {
+            System.out.print("Adınız: ");
+            String ad = scanner.nextLine();
+            System.out.print("Soyadınız: ");
+            String soyad = scanner.nextLine();
+            System.out.print("Yaşınız: ");
+            int yas = scanner.nextInt();
+
+            Rezervasyon rez = new Rezervasyon(secilenUcus, ad, soyad, yas);
+            rezervasyonlar.add(rez);
+
+            System.out.println("Rezervasyon başarıyla yapıldı!");
+            System.out.println(rez);
+
+            // CSV'ye yaz
+            try (FileWriter writer = new FileWriter("rezervasyonlar.csv", true)) {
+                writer.write(rez.toCSV() + "\n");
+            } catch (IOException e) {
+                System.out.println("Dosyaya yazma hatası: " + e.getMessage());
+            }
+
+        } else {
+            System.out.println("Üzgünüz, uçakta boş koltuk kalmamış.");
+        }
+    }
+}
 
